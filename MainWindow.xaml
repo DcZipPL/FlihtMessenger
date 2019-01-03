@@ -1,0 +1,371 @@
+﻿<Window x:Class="FlihtMesseger.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FlihtMesseger"
+        mc:Ignorable="d"
+        Title="Fliht Messenger" Height="620" Width="520" MinHeight="50" MinWidth="520" Loaded="Window_IsLoaded" AllowsTransparency="True" WindowStyle="None" Background="Transparent" Icon="Icons/Logos/Logo_256px.png" Activated="Window_Activated">
+    <Window.TaskbarItemInfo>
+        <TaskbarItemInfo x:Name="badge" Description="Fliht Messenger" Overlay="Icons/Badges/NewMessage_1.png">
+        </TaskbarItemInfo>
+    </Window.TaskbarItemInfo>
+    <Grid>
+        <Border x:Name="RoundBorder" BorderThickness="0.8" Margin="10">
+            <Border.Effect>
+                <DropShadowEffect x:Name="DropSh" Direction="0" ShadowDepth="0" Opacity="0.4" BlurRadius="14"/>
+            </Border.Effect>
+            <Border.BorderBrush>
+                <SolidColorBrush Color="Red"/>
+            </Border.BorderBrush>
+            <Grid>
+                <Grid x:Name="mainGrid" Background="White">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30px"/>
+                        <RowDefinition x:Name="statusDef" Height="30px"/>
+                        <RowDefinition Height="10px"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="10px"/>
+                        <RowDefinition Height="35"/>
+                    </Grid.RowDefinitions>
+                    <Grid x:Name="topBar">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition Width="50"/>
+                            <ColumnDefinition Width="50"/>
+                            <ColumnDefinition Width="50"/>
+                            <ColumnDefinition Width="50"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid MouseDown="MoveWindow" Background="#02000000">
+                            <TextBlock x:Name="titlebar" Text="Fliht Messenger" VerticalAlignment="Center" Margin="10,0,0,0" HorizontalAlignment="Left"/>
+                        </Grid>
+                        <Grid Grid.Column="1">
+                            <Button x:Name="settingsButton" Style="{StaticResource TitleBarModernButton}" Click="SettingsButton">
+                                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="&#xE115;" FontFamily="Segoe MDL2 Assets" FontSize="14"/>
+                            </Button>
+                        </Grid>
+                        <Grid Grid.Column="2">
+                            <Button x:Name="refreshButton" Style="{StaticResource TitleBarModernButton}" Click="RefreshButton">
+                                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="14"/>
+                            </Button>
+                        </Grid>
+                        <Grid Grid.Column="3">
+                            <Button x:Name="hideButton" Style="{StaticResource TitleBarModernButton}" Click="HideButton_Click">
+                                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="&#xE738;" FontFamily="Segoe MDL2 Assets"/>
+                            </Button>
+                        </Grid>
+                        <Grid Grid.Column="4">
+                            <Button x:Name="maximalizeButton" Style="{StaticResource TitleBarModernButton}" Click="Fullscreen_Click">
+                                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="&#xE15B;" FontFamily="Segoe MDL2 Assets"/>
+                            </Button>
+                        </Grid>
+                        <Grid Grid.Column="5">
+                            <Button x:Name="closeButton" Style="{StaticResource ModernCloseButton}" Click="CloseButton_Click" FontSize="10">
+                                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="&#xE10A;" FontSize="14" FontFamily="Segoe MDL2 Assets"/>
+                            </Button>
+                        </Grid>
+                    </Grid>
+                    <Grid x:Name="statusGrid" Grid.Row="1">
+                        <TextBlock x:Name="errorStatus" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Connecting..." FontSize="14"/>
+                    </Grid>
+                    <Rectangle x:Name="topShadow" Grid.Row="2" RenderTransformOrigin="0.5,0.5">
+                        <Rectangle.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </Rectangle.RenderTransform>
+                        <Rectangle.Fill>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FFB4B4B4" Offset="0"/>
+                                <GradientStop Offset="1"/>
+                            </LinearGradientBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <Grid Grid.Row="3">
+                        <Grid x:Name="smainGrid" d:IsEffectDisabled="True">
+                            <Grid.Effect>
+                                <BlurEffect x:Name="loginblur" Radius="8"/>
+                            </Grid.Effect>
+                            <ScrollViewer x:Name="messagesViwer">
+                                <Grid>
+                                    <Grid x:Name="contentGrid">
+                                        <!--BoȠC (Based on ȠoChat)-->
+                                        <TextBlock x:Name="mainMessages" Text="Fliht Messenger has runned successfully!" Padding="5"/>
+                                    </Grid>
+                                </Grid>
+                            </ScrollViewer>
+                            <Border x:Name="SettingsBorder" Background="White" Margin="0,0,10,0">
+                                <Grid>
+                                    <StackPanel Margin="20,0,0,0">
+                                        <!--Addresses-->
+                                        <TextBlock Text="Address:" Margin="0,5,0,0" FontSize="14"/>
+                                        <TextBlock x:Name="AddressInfoBlock" Text="No Changes" Margin="0,0,5,5" Foreground="Black" FontSize="13"/>
+                                        <Grid Margin="0,0,5,0">
+                                            <Rectangle Fill="White" x:Name="shadowRectangle1">
+                                                <Rectangle.Effect>
+                                                    <DropShadowEffect ShadowDepth="0" Color="#FFBBBBBB"/>
+                                                </Rectangle.Effect>
+                                            </Rectangle>
+                                            <TextBox x:Name="AddressBox" BorderThickness="0" Height="26" FontSize="16" Background="Transparent"/>
+                                        </Grid>
+                                        <!--RefreshingTime-->
+                                        <TextBlock Text="Refresh Time:" Margin="0,5,0,0" FontSize="14"/>
+                                        <Grid Margin="0,0,5,0">
+                                            <Rectangle Fill="White" x:Name="shadowRectangle9">
+                                                <Rectangle.Effect>
+                                                    <DropShadowEffect ShadowDepth="0" Color="#FFBBBBBB"/>
+                                                </Rectangle.Effect>
+                                            </Rectangle>
+                                            <ComboBox x:Name="RefreshTimeBox" BorderThickness="0" Height="26" FontSize="16" Background="Transparent" BorderBrush="White"/>
+                                        </Grid>
+                                        <!--Themes-->
+                                        <Grid Margin="0,10,0,0">
+                                            <TextBlock Text="Chat Theme:" Margin="0" FontSize="14"/>
+                                            <StackPanel Orientation="Horizontal" Margin="0,25,0,0">
+                                                <Grid>
+                                                    <Rectangle Fill="White" HorizontalAlignment="Right" Height="26" Width="150"
+                                                                        VerticalAlignment="Bottom" x:Name="shadowRectangle6">
+                                                        <Rectangle.Effect>
+                                                            <DropShadowEffect ShadowDepth="0" Color="#FFBBBBBB" BlurRadius="5"/>
+                                                        </Rectangle.Effect>
+                                                    </Rectangle>
+                                                    <ToggleButton x:Name="MmTb" Height="26" Style="{StaticResource ToggleModernButton}" Click="CheckChanged">Modern</ToggleButton>
+                                                </Grid>
+                                                <Grid Margin="5,0,0,0">
+                                                    <Rectangle Fill="White" HorizontalAlignment="Right" Height="26" Width="150"
+                                                                        VerticalAlignment="Bottom" x:Name="shadowRectangle7">
+                                                        <Rectangle.Effect>
+                                                            <DropShadowEffect ShadowDepth="0" Color="#FFBBBBBB"/>
+                                                        </Rectangle.Effect>
+                                                    </Rectangle>
+                                                    <ToggleButton x:Name="MiTb" Height="26" Style="{StaticResource ToggleModernButton}" Click="CheckChanged">IRC</ToggleButton>
+                                                </Grid>
+                                                <Grid Margin="5,0,0,0">
+                                                    <Rectangle Fill="White" HorizontalAlignment="Right" Height="26" Width="150"
+                                                                        VerticalAlignment="Bottom" x:Name="shadowRectangle8">
+                                                        <Rectangle.Effect>
+                                                            <DropShadowEffect ShadowDepth="0" Color="#FFBBBBBB"/>
+                                                        </Rectangle.Effect>
+                                                    </Rectangle>
+                                                    <ToggleButton x:Name="MaTb" Style="{StaticResource ToggleModernButton}" Click="CheckChanged">All</ToggleButton>
+                                                </Grid>
+                                            </StackPanel>
+                                        </Grid>
+                                        <Grid Height="110" Margin="0,5,5,0">
+                                            <Rectangle x:Name="shadowRectangle" Fill="#FFFFFFFF">
+                                                <Rectangle.Effect>
+                                                    <DropShadowEffect ShadowDepth="0" Color="#FFBBBBBB"/>
+                                                </Rectangle.Effect>
+                                            </Rectangle>
+                                            <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Visible">
+                                                <StackPanel Orientation="Horizontal" TextOptions.TextFormattingMode="Ideal" TextOptions.TextRenderingMode="ClearType" HorizontalAlignment="Left">
+                                                    <Button Style="{StaticResource TitleBarModernButton}" Padding="0" Margin="1,0,0,0" Tag="Light" Click="ChangeTheme_Click">
+                                                        <Grid Height="90" Width="140" HorizontalAlignment="Left" Margin="5,0" Background="White">
+                                                            <Rectangle Fill="White">
+                                                                <Rectangle.Effect>
+                                                                    <DropShadowEffect ShadowDepth="0" Color="#FFBBBBBB"/>
+                                                                </Rectangle.Effect>
+                                                            </Rectangle>
+                                                            <Rectangle Fill="White" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,10,10" Width="40" Height="20">
+                                                                <Rectangle.Effect>
+                                                                    <DropShadowEffect ShadowDepth="0" Color="#FFBBBBBB"/>
+                                                                </Rectangle.Effect>
+                                                            </Rectangle>
+                                                            <TextBlock Text="Light Theme" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2,2,0,0" FontSize="14" Foreground="Black"/>
+                                                        </Grid>
+                                                    </Button>
+                                                    <Button Style="{StaticResource TitleBarModernButton}" Padding="0" Tag="Window" Click="ChangeTheme_Click">
+                                                        <Grid Height="90" Width="140" HorizontalAlignment="Left" Margin="5,0" Background="White">
+                                                            <Rectangle Fill="White">
+                                                                <Rectangle.Effect>
+                                                                    <DropShadowEffect ShadowDepth="0" Color="#FFBBBBBB"/>
+                                                                </Rectangle.Effect>
+                                                            </Rectangle>
+                                                            <Rectangle x:Name="ThemeTestWin" Fill="Red" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,10,10" Width="40" Height="20">
+                                                                <Rectangle.Effect>
+                                                                    <DropShadowEffect ShadowDepth="0" Color="#FFBBBBBB"/>
+                                                                </Rectangle.Effect>
+                                                            </Rectangle>
+                                                            <TextBlock Text="Light With Windows&#x0a;Color Theme" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2,2,0,0" FontSize="14" Foreground="Black"/>
+                                                            <!--<Rectangle x:Name="ThemeTestWin1" VerticalAlignment="Bottom" Fill="Red" Height="10"/>-->
+                                                        </Grid>
+                                                    </Button>
+                                                    <Button Style="{StaticResource TitleBarModernButton}" Padding="0" Tag="Dark" Click="ChangeTheme_Click">
+                                                        <Grid Height="90" Width="140" HorizontalAlignment="Center" Margin="5,0" Background="#FF232323">
+                                                            <Rectangle Fill="#FF232323">
+                                                                <Rectangle.Effect>
+                                                                    <DropShadowEffect ShadowDepth="0" Color="#FFBBBBBB"/>
+                                                                </Rectangle.Effect>
+                                                            </Rectangle>
+                                                            <Rectangle Fill="#FF232323" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,10,10" Width="40" Height="20">
+                                                                <Rectangle.Effect>
+                                                                    <DropShadowEffect ShadowDepth="0" Color="#FFBBBBBB"/>
+                                                                </Rectangle.Effect>
+                                                            </Rectangle>
+                                                            <TextBlock Text="Dark Theme" Foreground="#FFF0F0F0" Margin="2,2,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="14"/>
+                                                        </Grid>
+                                                    </Button>
+                                                    <Button Style="{StaticResource TitleBarModernButton}" Padding="0" Tag="FlatDark" Click="ChangeTheme_Click">
+                                                        <Grid Height="90" Width="140" HorizontalAlignment="Center" Margin="5,0" Background="#FF232323">
+                                                            <Rectangle Fill="#FF191919">
+                                                                <Rectangle.Effect>
+                                                                    <DropShadowEffect ShadowDepth="0" Color="#FFBBBBBB" BlurRadius="0"/>
+                                                                </Rectangle.Effect>
+                                                            </Rectangle>
+                                                            <Rectangle Fill="#FF232323" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,10,10" Width="40" Height="20"></Rectangle>
+                                                            <TextBlock Text="Flat Deep Dark Theme" Foreground="#FFF0F0F0" Margin="2,2,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="14"/>
+                                                        </Grid>
+                                                    </Button>
+                                                </StackPanel>
+                                            </ScrollViewer>
+                                        </Grid>
+                                        <!--CheckBoxes-->
+                                        <TextBlock Text="Options:" Margin="0,10,0,0" FontSize="14"/>
+                                        <Grid HorizontalAlignment="Left">
+                                            <CheckBox x:Name="CheckBoxEDO" Margin="-1,4,0,0" BorderBrush="White" Content="">
+                                                <CheckBox.Effect>
+                                                    <DropShadowEffect ShadowDepth="0" Color="#FFBBBBBB"/>
+                                                </CheckBox.Effect>
+                                            </CheckBox>
+                                            <TextBlock Text="Enable Developer Options" Margin="20,3,0,0"/>
+                                        </Grid>
+                                    </StackPanel>
+                                    <!--Buttons-->
+                                    <!--#region Shadows-->
+                                    <Rectangle Fill="White" HorizontalAlignment="Right" Height="25" Width="70" Margin="0,0,5,5"
+                                                   VerticalAlignment="Bottom" x:Name="shadowRectangle3">
+                                        <Rectangle.Effect>
+                                            <DropShadowEffect ShadowDepth="0" Color="#FFBBBBBB"/>
+                                        </Rectangle.Effect>
+                                    </Rectangle>
+                                    <Rectangle Fill="White" HorizontalAlignment="Right" Height="25" Width="70" Margin="0,0,80,5"
+                                                   VerticalAlignment="Bottom" x:Name="shadowRectangle2">
+                                        <Rectangle.Effect>
+                                            <DropShadowEffect ShadowDepth="0" Color="#FFBBBBBB"/>
+                                        </Rectangle.Effect>
+                                    </Rectangle>
+                                    <Rectangle x:Name="resizeShadow" Fill="White" HorizontalAlignment="Right" Margin="0,0,190,5" Height="25" Width="40"
+                                                   VerticalAlignment="Bottom">
+                                        <Rectangle.Effect>
+                                            <DropShadowEffect ShadowDepth="0" Color="#FFBBBBBB"/>
+                                        </Rectangle.Effect>
+                                    </Rectangle>
+                                    <!--#endregion-->
+                                    <Button x:Name="applySettingsButton" HorizontalAlignment="Right" Content="Apply"
+                                                Style="{StaticResource TitleBarModernButton}" Height="25" Width="70" Margin="0,0,80,5"
+                                                Click="ApplySettings_Click" VerticalAlignment="Bottom">
+                                    </Button>
+                                    <Button x:Name="closeSettingsButton" HorizontalAlignment="Right" Content="Close"
+                                                Style="{StaticResource TitleBarModernButton}" Height="25" Width="70" Margin="0,0,5,5"
+                                                Click="SettingsButton" VerticalAlignment="Bottom">
+                                    </Button>
+                                    <Button x:Name="resizeButton" Style="{StaticResource TitleBarModernButton}" Click="ResizeButton_Click"
+                                                VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,190,5" Height="25" Width="40">
+                                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="&#xE14E;"
+                                                       FontFamily="Segoe MDL2 Assets" Margin="0" FontSize="18"/>
+                                    </Button>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                        <Grid x:Name="loginBox" d:IsHidden="True">
+                            <Rectangle VerticalAlignment="Center" HorizontalAlignment="Center"
+                                           Width="400" Height="250" Fill="White">
+                                <Rectangle.Effect>
+                                    <DropShadowEffect ShadowDepth="0" Color="#FFBBBBBB" BlurRadius="8"/>
+                                </Rectangle.Effect>
+                            </Rectangle>
+                            <Grid VerticalAlignment="Center" HorizontalAlignment="Center" Width="400" Height="250">
+                                <TextBlock Text="Please Login" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                                <StackPanel VerticalAlignment="Center">
+                                    <Grid VerticalAlignment="Center" Margin="10,0">
+                                        <Rectangle Fill="White" x:Name="shadowRectangle4">
+                                            <Rectangle.Effect>
+                                                <DropShadowEffect ShadowDepth="0" Color="#FFBBBBBB"/>
+                                            </Rectangle.Effect>
+                                        </Rectangle>
+                                    </Grid>
+                                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="Nickname:" Margin="0,5"/>
+                                    <Grid VerticalAlignment="Center" Margin="10,0">
+                                        <Rectangle Fill="White" x:Name="shadowRectangle5">
+                                            <Rectangle.Effect>
+                                                <DropShadowEffect ShadowDepth="0" Color="#FFBBBBBB"/>
+                                            </Rectangle.Effect>
+                                        </Rectangle>
+                                        <TextBox x:Name="NickBox" BorderThickness="0" Height="26" FontSize="16" Background="Transparent"/>
+                                    </Grid>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <Grid Width="60" Height="25" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,0">
+                                            <Rectangle Fill="White">
+                                                <Rectangle.Effect>
+                                                    <DropShadowEffect ShadowDepth="0" Color="#FFBBBBBB" BlurRadius="5"/>
+                                                </Rectangle.Effect>
+                                            </Rectangle>
+                                            <Button Style="{StaticResource TitleBarModernButton}" Content="Login"
+                                                    Click="LoginButton_Click"/>
+                                        </Grid>
+                                        <Grid Width="60" Height="25" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,10,0,0" Visibility="Collapsed">
+                                            <Rectangle Fill="White" Visibility="Collapsed">
+                                                <Rectangle.Effect>
+                                                    <DropShadowEffect ShadowDepth="0" Color="#FFBBBBBB" BlurRadius="5"/>
+                                                </Rectangle.Effect>
+                                            </Rectangle>
+                                            <!--<Button Style="{StaticResource TitleBarModernButton}" Content="Install" IsEnabled="False"
+                                                    Click="LoginButton_Click"/>-->
+                                        </Grid>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    <Rectangle x:Name="downShadow" Grid.Row="4">
+                        <Rectangle.Fill>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FFB4B4B4" Offset="1"/>
+                                <GradientStop/>
+                            </LinearGradientBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <Grid x:Name="bpanel" Grid.Row="5">
+                        <Grid>
+                            <Button x:Name="sendButton" Style="{StaticResource TitleBarModernButton}" 
+                                HorizontalAlignment="Right" Content="&#xE122;" Margin="0,0,0,0"
+                                Padding="6,3" FontFamily="Segoe MDL2 Assets" FontSize="22" Width="38" Click="SendButton_Click"/>
+                            <TextBox x:Name="mainText" Margin="0,0,40,0" BorderBrush="{x:Null}"
+                                 BorderThickness="0" Background="Transparent" FontSize="16"/>
+                        </Grid>
+                        <Grid x:Name="bottomSettingsGrid" Background="White">
+                            <Button x:Name="applyandexitbutton" Style="{StaticResource TitleBarModernButton}" Content="Apply &amp; Close" Click="Applyandexitbutton_Click"/>
+                        </Grid>
+                        <Grid x:Name="bottomLoginGrid" Background="White" d:IsHidden="True">
+                            <Grid x:Name="aboutBox">
+                                <TextBlock VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,2,0,0">
+                                Fliht Messenger by DcZipPL
+                                </TextBlock>
+                                <TextBlock VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,2">
+                                Open Source: https://github.com/DcZipPL/FlihtMessenger
+                                </TextBlock>
+                            </Grid>
+                            <Grid x:Name="loginerrorBox" Visibility="Collapsed">
+                                <TextBlock x:Name="loginError" VerticalAlignment="Center" HorizontalAlignment="Center" Text="ERROR!!! PLEACE REPORT!!!"/>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Border>
+        <Rectangle x:Name="bottomResize" VerticalAlignment="Bottom" Fill="#33FF0000"
+                   MouseDown="ResizeBox_MouseDown" MouseMove="ResizeBox_MouseMove" MouseUp="ResizeBox_MouseUp"
+                   Cursor="SizeNS" Height="6" Margin="10,0,10,4"/>
+        <Rectangle x:Name="leftResize" Fill="#33FF0000" Margin="4,10,0,10"
+                   MouseDown="ResizeBox_MouseDown" MouseMove="ResizeBox_MouseMove" MouseUp="ResizeBox_MouseUp"
+                   Cursor="SizeWE" HorizontalAlignment="Left" Width="6"/>
+        <Rectangle x:Name="rightResize" Fill="#33FF0000" Margin="0,10,4,10"
+                   MouseDown="ResizeBox_MouseDown" MouseMove="ResizeBox_MouseMove" MouseUp="ResizeBox_MouseUp"
+                   Cursor="SizeWE" HorizontalAlignment="Right" Width="6"/>
+        <Rectangle x:Name="ResizeBox" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="6" Height="6" Fill="Red" Margin="0,0,4,4" MouseDown="ResizeBox_MouseDown" MouseMove="ResizeBox_MouseMove" MouseUp="ResizeBox_MouseUp"/>
+    </Grid>
+</Window>

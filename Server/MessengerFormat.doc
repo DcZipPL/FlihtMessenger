@@ -1,0 +1,2 @@
+#Format: [USR@PX]~[hh-mm-ss-DD-MM-YYYY]~[MSG]
+#D = DAY, M = M, Y = Year, h = hour, m = minut, s = second, MSG = Message, USR = Name of User, PX = Prefix "Token" ex. 1234
